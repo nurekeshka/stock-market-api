@@ -1,6 +1,14 @@
 {
+  "editor.formatOnSave": true,
   "java.compile.nullAnalysis.mode": "automatic",
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[java]": {
     "editor.suggest.snippetsPreventQuickSuggestions": false,
-  }
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "java.configuration.updateBuildConfiguration": "automatic"
 }
