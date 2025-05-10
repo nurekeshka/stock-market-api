@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents an account in the stock market application.
- * This class is immutable and uses a builder pattern for object creation.
+ * This class is immutable and uses a builder pattern for instantiation.
  * It is annotated as a MongoDB document with the collection name "accounts".
  * 
  * <p>
@@ -21,9 +21,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * random UUID is generated.</li>
  * <li><b>username</b>: The username associated with the account.</li>
  * <li><b>email</b>: The email address associated with the account.</li>
- * <li><b>password</b>: The password for the account, stored as a transient
- * field and only accessible for write operations.</li>
- * <li><b>holdings</b>: A list of holdings associated with the account.</li>
+ * <li><b>password</b>: The account's password, which is write-only and
+ * transient for security purposes.</li>
+ * <li><b>holdings</b>: A list of holdings associated with the account,
+ * defaulting to an empty list if not provided.</li>
  * </ul>
  * 
  * <p>
@@ -32,8 +33,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * <li>Provides a builder class for constructing instances of the Account
  * class.</li>
  * <li>Supports login functionality by validating the provided password.</li>
- * <li>Ensures immutability by making all fields final and providing no
- * setters.</li>
+ * <li>Ensures immutability by making all fields final and initializing them in
+ * the constructor.</li>
  * </ul>
  * 
  * <p>
@@ -54,14 +55,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * <li>{@code @Id}: Marks the UUID field as the primary identifier for the
  * document.</li>
  * <li>{@code @JsonProperty}: Configures the password field to be write-only in
- * JSON serialization/deserialization.</li>
+ * JSON serialization.</li>
  * </ul>
  * 
  * <p>
  * Thread Safety:
- * <ul>
- * <li>This class is immutable and thread-safe.</li>
- * </ul>
+ * This class is immutable and therefore thread-safe.
  */
 @Document(collection = "accounts")
 public class Account implements Serializable {
@@ -116,11 +115,11 @@ public class Account implements Serializable {
   private final List<Holding> holdings;
 
   private Account(Builder builder) {
-    this.uuid = builder.uuid != null ? builder.uuid : UUID.randomUUID();
     this.username = builder.username;
     this.email = builder.email;
     this.password = builder.password;
-    this.holdings = builder.holdings;
+    this.uuid = builder.uuid != null ? builder.uuid : UUID.randomUUID();
+    this.holdings = builder.holdings != null ? builder.holdings : List.of();
   }
 
   public UUID getUuid() {
@@ -131,12 +130,12 @@ public class Account implements Serializable {
     return username;
   }
 
-  public boolean login(String password) {
-    return this.password.equals(password);
-  }
-
   public String getEmail() {
     return email;
+  }
+
+  public boolean login(String password) {
+    return this.password.equals(password);
   }
 
   public List<Holding> getHoldings() {
