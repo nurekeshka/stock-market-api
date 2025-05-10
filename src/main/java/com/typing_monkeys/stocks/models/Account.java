@@ -134,8 +134,8 @@ public class Account implements Serializable {
     return email;
   }
 
-  public boolean login(String password) {
-    return this.password.equals(password);
+  public String getPassword() {
+    return password;
   }
 
   public List<Holding> getHoldings() {
