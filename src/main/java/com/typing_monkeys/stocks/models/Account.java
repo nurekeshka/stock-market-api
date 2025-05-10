@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceCreator;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -120,6 +121,15 @@ public class Account implements Serializable {
     this.password = builder.password;
     this.uuid = builder.uuid != null ? builder.uuid : UUID.randomUUID();
     this.holdings = builder.holdings != null ? builder.holdings : List.of();
+  }
+
+  @PersistenceCreator
+  public Account(UUID uuid, String username, String email, String password, List<Holding> holdings) {
+    this.uuid = uuid;
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.holdings = holdings != null ? holdings : List.of();
   }
 
   public UUID getUuid() {
