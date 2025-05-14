@@ -20,12 +20,12 @@ public class AccountDetailsService implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     Account account = repository.findByUsername(username);
-
     if (account == null) {
       throw new UsernameNotFoundException("User not found with username: " + username);
     }
+    UserDetails userDetails = User.builder().username(account.getUsername()).password(account.getPassword())
+        .roles("USER").build();
 
-    return new AccountDetails(account);
+    return userDetails;
   }
-
 }
