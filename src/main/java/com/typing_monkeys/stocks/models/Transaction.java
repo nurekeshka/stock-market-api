@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Currency;
+import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -75,14 +76,13 @@ public class Transaction implements Serializable {
 
   public static class Builder {
     private String transactionId = UUID.randomUUID().toString();
- 
     private Type type;
     private BigDecimal price;
     private BigDecimal shares;
     private ZonedDateTime timestamp;
     private Currency currency;
 
-    public Builder transactionId(Long transactionId) {
+    public Builder transactionId(String transactionId) {
       this.transactionId = transactionId;
       return this;
     }
@@ -140,8 +140,9 @@ public class Transaction implements Serializable {
       return value;
     }
   }
-  @Id   
-  private final Long transactionId;
+
+  @Id
+  private final String transactionId;
   private final Type type;
   private final BigDecimal price;
   private final BigDecimal shares;
@@ -170,9 +171,11 @@ public class Transaction implements Serializable {
       default -> throw new IllegalArgumentException("Unknown transaction type: " + type);
     };
   }
-  public Long getTransactionId() {
+
+  public String getTransactionId() {
     return transactionId;
   }
+
   public Type getType() {
     return type;
   }
