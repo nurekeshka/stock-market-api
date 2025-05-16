@@ -90,7 +90,6 @@ public class Holding implements Serializable {
   private final String symbol;
   private final BigDecimal value;
   private final BigDecimal shares;
-
   private final List<Transaction> transactions;
 
   private Holding(Builder builder) {
