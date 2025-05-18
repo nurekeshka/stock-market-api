@@ -2,7 +2,6 @@ package com.typing_monkeys.stocks.security;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.typing_monkeys.stocks.configs.JwtConfig;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -20,14 +21,13 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
-  @Value("${jwt.secret}")
-  private String secretKey;
+  private JwtConfig jwtConfig;
 
   private final UserDetailsService userDetailsService;
 
-  public JwtAuthenticationFilter(UserDetailsService userDetailsService) {
+  public JwtAuthenticationFilter(UserDetailsService userDetailsService, JwtConfig jwtConfig) {
     this.userDetailsService = userDetailsService;
+    this.jwtConfig = jwtConfig;
   }
 
   @Override
@@ -41,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
       try {
         Claims claims = Jwts.parserBuilder()
-            .setSigningKey(secretKey.getBytes())
+            .setSigningKey(jwtConfig.getSecret().getBytes())
             .build()
             .parseClaimsJws(token)
             .getBody();
@@ -55,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
               userDetails, null, userDetails.getAuthorities());
           SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-      } catch (Exception e) {
+      } catch (Exception _) {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         return;
       }

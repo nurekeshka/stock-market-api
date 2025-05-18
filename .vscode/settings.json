@@ -1,5 +1,6 @@
 {
   "editor.formatOnSave": true,
+  "editor.tabSize": 2,
   "java.compile.nullAnalysis.mode": "automatic",
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

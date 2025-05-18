@@ -15,4 +15,12 @@ public class SignInResponse implements Serializable {
     this.token = null;
     this.message = message;
   }
+
+  public String getToken() {
+    return token;
+  }
+
+  public String getMessage() {
+    return message;
+  }
 }
