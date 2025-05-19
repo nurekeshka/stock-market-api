@@ -1,9 +1,9 @@
 import { ConfigurationModule } from '@libs/configuration';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
+import { MongooseModule, MongooseModuleFactoryOptions } from '@nestjs/mongoose';
 
-export function setup(config: ConfigService) {
+export function setup(config: ConfigService): MongooseModuleFactoryOptions {
   return {
     uri: config.getOrThrow<string>('database.link'),
     appName: config.getOrThrow<string>('database.name'),

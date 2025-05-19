@@ -12,9 +12,6 @@
     "noImplicitAny": false,
     "outDir": "./dist",
     "paths": {
-      "@libs/auth": [
-        "libs/auth/src"
-      ],
       "@libs/common": [
         "libs/common/src"
       ],
@@ -24,8 +21,8 @@
       "@libs/database": [
         "libs/database/src"
       ],
-      "@libs/finnhub-api": [
-        "libs/finnhub-api/src"
+      "@libs/finnhub": [
+        "libs/finnhub/src"
       ]
     },
     "removeComments": true,

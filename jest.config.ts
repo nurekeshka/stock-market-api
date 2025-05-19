@@ -5,10 +5,9 @@ const options: Config = {
   coverageDirectory: './coverage',
   moduleFileExtensions: ['js', 'json', 'ts'],
   moduleNameMapper: {
-    '^@libs/auth(|/.*)$': '<rootDir>/libs/auth/src/$1',
     '^@libs/common(|/.*)$': '<rootDir>/libs/common/src/$1',
     '^@libs/database(|/.*)$': '<rootDir>/libs/database/src/$1',
-    '^@libs/finnhub-api(|/.*)$': '<rootDir>/libs/finnhub-api/src/$1',
+    '^@libs/finnhub(|/.*)$': '<rootDir>/libs/finnhub/src/$1',
     '^@libs/configuration(|/.*)$': '<rootDir>/libs/configuration/src/$1',
   },
   rootDir: '.',

@@ -9,10 +9,9 @@ export default {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
   moduleNameMapper: {
-    '@libs/auth': '<rootDir>/../libs/auth/src',
     '@libs/common': '<rootDir>/../libs/common/src',
     '@libs/database': '<rootDir>/../libs/database/src',
-    '@libs/finnhub-api': '<rootDir>/../libs/finnhub-api/src',
+    '@libs/finnhub': '<rootDir>/../libs/finnhub/src',
     '@libs/configuration': '<rootDir>/../libs/configuration/src',
   },
 } as Config;
