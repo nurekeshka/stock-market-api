@@ -6,8 +6,8 @@
     }
   },
   "database": {
-    "link": "mongodb+srv://admin:<db_password>@cluster-0.ytgknug.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-0",
-    "name": ""
+    "link": "mongodb+srv://admin:<db_password>@cluster-0.ytgknug.mongodb.net/stocks-market?retryWrites=true&w=majority&appName=Cluster-0",
+    "name": "stocks-market"
   },
   "pagination": {
     "defaultLimit": 0,

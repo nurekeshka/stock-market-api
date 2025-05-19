@@ -10,8 +10,11 @@ import { config, env, validate } from './configuration.utils';
 export async function setup() {
   if (!validate(env)) throw Error('Application is running on unknown env.');
 
-  const mode = env === 'test' ? ConfigurationEnum.test : ConfigurationEnum.base;
-  const base = await config(mode);
+  if (env === 'test') {
+    return config(ConfigurationEnum.test);
+  }
+
+  const base = await config(ConfigurationEnum.base);
 
   if (base === null) throw Error('Base configuration file is not there.');
 
@@ -20,7 +23,6 @@ export async function setup() {
   return {
     ...base,
     ...local,
-    env,
   };
 }
 
