@@ -1,16 +1,14 @@
 {
-  "editor.formatOnSave": true,
-  "editor.tabSize": 2,
-  "java.compile.nullAnalysis.mode": "automatic",
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.json-language-features"
   },
-  "[java]": {
-    "editor.suggest.snippetsPreventQuickSuggestions": false,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit"
-    }
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.ts": "explicit",
+    "source.organizeImports": "explicit",
+    "source.sort.json": "explicit",
+    "source.sortImports": "explicit"
   },
-  "java.configuration.updateBuildConfiguration": "automatic",
-  "java.debug.settings.onBuildFailureProceed": true
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2
 }

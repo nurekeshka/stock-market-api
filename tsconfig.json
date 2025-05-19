@@ -1,21 +1,38 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
     "declaration": true,
-    "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "module": "commonjs",
+    "noFallthroughCasesInSwitch": false,
     "noImplicitAny": false,
+    "outDir": "./dist",
+    "paths": {
+      "@libs/auth": [
+        "libs/auth/src"
+      ],
+      "@libs/common": [
+        "libs/common/src"
+      ],
+      "@libs/configuration": [
+        "libs/configuration/src"
+      ],
+      "@libs/database": [
+        "libs/database/src"
+      ],
+      "@libs/finnhub-api": [
+        "libs/finnhub-api/src"
+      ]
+    },
+    "removeComments": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "strictNullChecks": true,
+    "target": "ES2021"
   }
 }

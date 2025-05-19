@@ -1,0 +1,27 @@
+{
+  "auth": {
+    "jwt": {
+      "expiresIn": "60m",
+      "secret": "e94a3a77b304df3e17a477d666d8f853ef4daac44c18274093169375c8ca5eab6fab82d805f14968b841dbd3d4e2734e5a45af5beba0ff2d66b5bb638e17ce00122be97ccc44e69a383e8d70b908f4c733bc17bb8eed08eacddbd1f51d886892cc469b435aef432ff4678ff5864158953673bc4f9402fc0e30800583bd1c0ee49fb53300deb1d3b8389f690d6f17c467046d48e0b1284871c68088fddeda36f272e8609c80839fd9823a106ba0cb2f3dffbad25e367e7dab0ef6a90224978fa5db13e1bed18bee7ba7c7ad6542c2af38cf394f7e76e17554121e1ccd79078c8c7524faa5bcd5978150d26dc05cc1e7247ed6bbd29256b778b9d067c5f9aeca12"
+    }
+  },
+  "database": {
+    "link": "mongodb+srv://admin:<db_password>@cluster-0.ytgknug.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-0",
+    "name": ""
+  },
+  "pagination": {
+    "defaultLimit": 0,
+    "ignoreSearchByInQueryParam": false,
+    "ignoreSelectInQueryParam": false,
+    "loadEagerRelations": false,
+    "maxLimit": 0,
+    "nullSort": "first",
+    "origin": "",
+    "paginationType": "limit",
+    "relativePath": false,
+    "withDeleted": false
+  },
+  "redis": {
+    "mock": true
+  }
+}
