@@ -14,5 +14,6 @@ const models = [{ name: Account.name, schema: AccountSchema }];
   imports: [MongooseModule.forFeature(models)],
   providers: [AccountsService, HoldingsService, TransactionsService],
   controllers: [AccountsController, HoldingsController, TransactionsController],
+  exports: [AccountsService],
 })
 export class AccountsModule {}

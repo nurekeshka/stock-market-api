@@ -1,13 +1,14 @@
 import { Controller, Get, Inject, Param } from '@nestjs/common';
-import { HoldingsService } from '../service/holdings.service';
+import { Transaction } from '../schemas/transactions.schema';
+import { TransactionsService } from '../service/transactions.service';
 
 @Controller('api/accounts/:accountId/holdings')
 export class TransactionsController {
-  @Inject(HoldingsService)
-  private readonly service: HoldingsService;
+  @Inject(TransactionsService)
+  private readonly service: TransactionsService;
 
   @Get()
-  findAll(@Param('accountId') uuid: string) {
-    return this.service.findAll(uuid);
+  findAll(@Param('accountId') uuid: string): Promise<Transaction[]> {
+    return [{ uuid }] as never;
   }
 }
