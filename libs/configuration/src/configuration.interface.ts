@@ -4,7 +4,6 @@ import { environments } from './configuration.constants';
 export type Environments = (typeof environments)[number];
 
 export interface Configuration {
-  env: Environments;
   auth: {
     jwt: {
       secret: string;
@@ -14,6 +13,9 @@ export interface Configuration {
   database: {
     link: string;
     name: string;
+  };
+  finnhub: {
+    key: string;
   };
   pagination: PaginationConfigs;
   redis: {

@@ -1,2 +1,1 @@
-export * from './finnhub-api.module';
-export * from './finnhub-api.service';
+export * from './finnhub.module';

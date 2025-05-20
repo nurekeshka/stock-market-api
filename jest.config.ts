@@ -13,6 +13,7 @@ const options: Config = {
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   moduleNameMapper: {
     '^@libs/common(|/.*)$': '<rootDir>/libs/common/src/$1',
     '^@libs/database(|/.*)$': '<rootDir>/libs/database/src/$1',
