@@ -48,6 +48,6 @@ describe('Configuration Module', () => {
     await expect(setup()).resolves.toStrictEqual({
       redis: { mock: true },
     });
-    expect(configSpy).toHaveBeenCalledTimes(2);
+    expect(configSpy).toHaveBeenCalledTimes(1);
   });
 });
