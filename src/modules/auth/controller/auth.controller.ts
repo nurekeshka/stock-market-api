@@ -1,4 +1,15 @@
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { AccountsService } from 'src/modules/accounts/service/accounts.service';
+import { AuthorizedRequest } from '../dtos/auth-request.dto';
 import { JwtResponseDto } from '../dtos/jwt-response.dto';
 import { ProfileResponseDto } from '../dtos/profile.dto';
 import { SignInDto } from '../dtos/sign-in.dto';
@@ -9,6 +20,9 @@ import { AuthService } from '../service/auth.service';
 export class AuthController {
   @Inject(AuthService)
   private readonly service: AuthService;
+
+  @Inject(AccountsService)
+  private readonly accounts: AccountsService;
 
   @Post('sign-in')
   signIn(@Body() body: SignInDto): Promise<JwtResponseDto> {
@@ -21,7 +35,8 @@ export class AuthController {
   }
 
   @Get('me')
-  me(): Promise<ProfileResponseDto> {
-    return {} as never;
+  @UseGuards(AuthGuard('jwt'))
+  me(@Request() req: AuthorizedRequest): Promise<ProfileResponseDto | null> {
+    return this.accounts.findOne(req.user.username);
   }
 }

@@ -7,6 +7,7 @@ import { Account } from 'src/modules/accounts/schemas/accounts.schema';
 import { AccountsService } from 'src/modules/accounts/service/accounts.service';
 import { JwtResponseDto } from '../dtos/jwt-response.dto';
 import { SignInDto } from '../dtos/sign-in.dto';
+import { ValidationDto } from '../dtos/validation.dto';
 import { HashStrategy } from './hash.strategy';
 
 @Injectable()
@@ -28,7 +29,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(dto: SignInDto): Promise<Account | null> {
+  async login(dto: SignInDto): Promise<Account | null> {
     const account = await this.accounts.findOne(dto.username);
     return account &&
       (await this.hashes.compare(dto.password, account.password))
@@ -38,10 +39,18 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   createJwt(schema: Account): JwtResponseDto {
     return {
-      access_token: this.jwts.sign({
-        username: schema.username,
-        password: schema.password,
-      }),
+      access_token: this.jwts.sign(this.transform(schema)),
+    };
+  }
+
+  validate(dto: ValidationDto): ValidationDto {
+    return { username: dto.username };
+  }
+
+  transform(schema: SignInDto): SignInDto {
+    return {
+      username: schema.username,
+      password: schema.password,
     };
   }
 }
