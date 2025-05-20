@@ -32,8 +32,10 @@ describe('Configuration Module', () => {
 
   it('should throw if config not there', async () => {
     const existsSyncSpy = jest.spyOn(fs, 'existsSync').mockReturnValue(false);
-    await expect(setup()).rejects.toThrow();
-    expect(existsSyncSpy).toHaveBeenCalledTimes(1);
+    await expect(setup('dev')).rejects.toThrow();
+    await expect(setup('production')).rejects.toThrow();
+    await expect(setup('test')).rejects.toThrow();
+    expect(existsSyncSpy).toHaveBeenCalledTimes(3);
   });
 
   it('should override configs', async () => {
@@ -48,6 +50,13 @@ describe('Configuration Module', () => {
     await expect(setup()).resolves.toStrictEqual({
       redis: { mock: true },
     });
+
     expect(configSpy).toHaveBeenCalledTimes(1);
+
+    await expect(setup('dev')).resolves.toStrictEqual({
+      redis: { mock: false },
+    });
+
+    expect(configSpy).toHaveBeenCalledTimes(3);
   });
 });

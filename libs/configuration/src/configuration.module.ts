@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ConfigurationEnum } from './configuration.constants';
-import { Configuration } from './configuration.interface';
+import { Configuration, Environments } from './configuration.interface';
 import { config, env, validate } from './configuration.utils';
 
 /**
  * @throws {Error} when the configuration file doesn't exist
  * @throws {Error} when the application is running on unsupported env
  */
-export async function setup(): Promise<Configuration> {
+export async function setup(e: Environments = env): Promise<Configuration> {
   if (!validate(env)) throw Error('Application is running on unknown env.');
 
-  switch (env) {
+  switch (e) {
     case 'production':
     case 'dev': {
       const base = await config(ConfigurationEnum.base);
