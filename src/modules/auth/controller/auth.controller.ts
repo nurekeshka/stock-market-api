@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { AccountsService } from 'src/modules/accounts/service/accounts.service';
+import { AccountsService } from '../../accounts/service/accounts.service';
 import { AuthorizedRequest } from '../dtos/auth-request.dto';
 import { JwtResponseDto } from '../dtos/jwt-response.dto';
 import { ProfileResponseDto } from '../dtos/profile.dto';

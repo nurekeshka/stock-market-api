@@ -5,7 +5,7 @@ import { Configuration, Environments } from './configuration.interface';
 
 export const directory = process.env.CONFIG_DIR ?? 'libs/configuration/configs';
 
-export const env = process.env['NODE_ENV'] ?? 'dev';
+export const env = (process.env['NODE_ENV'] as Environments) ?? 'dev';
 
 export function validate(env: string | undefined): env is Environments {
   return environments.includes(env as Environments);

@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import * as bcrypt from 'bcrypt';
-import { Account } from 'src/modules/accounts/schemas/accounts.schema';
-import { AccountsService } from 'src/modules/accounts/service/accounts.service';
+import { Account } from '../../accounts/schemas/accounts.schema';
+import { AccountsService } from '../../accounts/service/accounts.service';
 import { SignUpDto } from '../dtos/sign-up.dto';
 
 @Injectable()

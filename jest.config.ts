@@ -4,12 +4,6 @@ const options: Config = {
   collectCoverageFrom: ['**/*.(t|j)s'],
   coverageDirectory: './coverage',
   moduleFileExtensions: ['js', 'json', 'ts'],
-  moduleNameMapper: {
-    '^@libs/common(|/.*)$': '<rootDir>/libs/common/src/$1',
-    '^@libs/database(|/.*)$': '<rootDir>/libs/database/src/$1',
-    '^@libs/finnhub(|/.*)$': '<rootDir>/libs/finnhub/src/$1',
-    '^@libs/configuration(|/.*)$': '<rootDir>/libs/configuration/src/$1',
-  },
   rootDir: '.',
   clearMocks: true,
   coveragePathIgnorePatterns: ['index.ts', 'main.ts'],
@@ -19,6 +13,16 @@ const options: Config = {
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
+  moduleNameMapper: {
+    '^@libs/common(|/.*)$': '<rootDir>/libs/common/src/$1',
+    '^@libs/database(|/.*)$': '<rootDir>/libs/database/src/$1',
+    '^@libs/finnhub(|/.*)$': '<rootDir>/libs/finnhub/src/$1',
+    '^@libs/configuration(|/.*)$': '<rootDir>/libs/configuration/src/$1',
+  },
 };
+
+export function mergeConfigs(options: Config): Config {
+  return { ...options, ...options };
+}
 
 export default options;
