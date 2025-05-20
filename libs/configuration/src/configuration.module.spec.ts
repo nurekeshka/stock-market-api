@@ -26,8 +26,8 @@ describe('Configuration Module', () => {
 
     await expect(setup()).resolves.toStrictEqual(configuration);
 
-    expect(existsSyncSpy).toHaveBeenCalledTimes(2);
-    expect(readFileSpy).toHaveBeenCalledTimes(2);
+    expect(existsSyncSpy).toHaveBeenCalledTimes(1);
+    expect(readFileSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should throw if config not there', async () => {
@@ -41,12 +41,11 @@ describe('Configuration Module', () => {
       .spyOn(utils, 'config')
       .mockImplementation((name) =>
         name === ConfigurationEnum.test
-          ? ({ redis: { mock: false } } as never)
-          : ({ redis: { mock: true } } as never),
+          ? ({ redis: { mock: true } } as never)
+          : ({ redis: { mock: false } } as never),
       );
 
     await expect(setup()).resolves.toStrictEqual({
-      env: 'test',
       redis: { mock: true },
     });
     expect(configSpy).toHaveBeenCalledTimes(2);

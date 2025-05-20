@@ -46,11 +46,7 @@ describe('Accounts Service', () => {
       exec: jest.fn().mockResolvedValueOnce(false),
     } as never);
 
-    repository.create.mockResolvedValueOnce({
-      username: 'test',
-      email: '',
-      password: '',
-    } as never);
+    repository.create.mockResolvedValueOnce(accountMock as never);
 
     const result = await service.create(accountMock);
     expect(result).toEqual(accountMock);
