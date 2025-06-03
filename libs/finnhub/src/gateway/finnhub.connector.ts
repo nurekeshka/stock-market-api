@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import { FinnhubWsDto, TradesAPIDto } from '../dtos/finnhub.dto';
+import { FinnhubWsDto, TradesAPIDto } from '../dtos/websockets.dto';
 
 export type FinnhubTradesPublisher = (dto: TradesAPIDto) => void;
 
