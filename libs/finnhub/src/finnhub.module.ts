@@ -1,10 +1,11 @@
 import { ConfigurationModule } from '@libs/configuration';
 import { Module } from '@nestjs/common';
-import { FinnhubService } from './finnhub.service';
+import { FinnhubWebsocketsGateway } from './gateway/finnhub.gateway';
+import { FinnhubService } from './service/finnhub.service';
 
 @Module({
   imports: [ConfigurationModule],
-  providers: [FinnhubService],
+  providers: [FinnhubService, FinnhubWebsocketsGateway],
   exports: [FinnhubService],
 })
 export class FinnhubModule {}

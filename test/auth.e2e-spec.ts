@@ -2,7 +2,7 @@
 import { ProfileResponseDto } from 'src/modules/auth/dtos/profile.dto';
 import * as supertest from 'supertest';
 import { JwtResponseDto } from '../src/modules/auth/dtos/jwt-response.dto';
-import { app } from './jest.e2e-setup';
+import { app } from './jest.setup';
 
 describe('Authentication & Authorization', () => {
   let jwt = '';

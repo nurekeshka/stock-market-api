@@ -5,7 +5,7 @@ import { setup } from './configuration.module';
 import * as utils from './configuration.utils';
 
 describe('Configuration Module', () => {
-  const configuration: Partial<Configuration> = { env: 'test' };
+  const configuration: Partial<Configuration> = {};
   const raw = JSON.stringify(configuration);
 
   afterEach(() => {
