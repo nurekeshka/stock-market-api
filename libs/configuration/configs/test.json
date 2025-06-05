@@ -6,11 +6,11 @@
     }
   },
   "database": {
-    "link": "mongodb+srv://admin:<db_password>@cluster-0.ytgknug.mongodb.net/stocks-market?retryWrites=true&w=majority&appName=Cluster-0",
+    "link": "mongodb+srv://a251080262:XFMn2J0NkdBTmI0C@assignment.zi4uvsx.mongodb.net/?retryWrites=true&w=majority&appName=Assignment",
     "name": "stocks-market"
   },
   "finnhub": {
-    "key": ""
+    "key": "d0kqpohr01qn937mgulgd0kqpohr01qn937mgum0"
   },
   "pagination": {
     "defaultLimit": 0,

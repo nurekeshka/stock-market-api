@@ -11,6 +11,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/platform-socket.io": "^11.1.2",
     "@nestjs/websockets": "^11.1.2",
+    "axios": "^1.9.0",
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
@@ -22,7 +23,8 @@
     "rxjs": "^7.8.1",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "ws": "^8.18.2"
   },
   "description": "The API Service for stocks markets mobile",
   "devDependencies": {
@@ -55,7 +57,8 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.20.0"
+    "typescript-eslint": "^8.20.0",
+    "webpack": "^5.99.9"
   },
   "license": "MIT",
   "name": "stocks-api",

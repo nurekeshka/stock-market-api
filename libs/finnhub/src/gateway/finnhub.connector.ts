@@ -1,35 +1,66 @@
 import { Logger } from '@nestjs/common';
-import { FinnhubWsDto, TradesAPIDto } from '../dtos/websockets.dto';
+import { WebSocket } from 'ws';
+import {
+  FinnhubWsDto,
+  FinnhubWsReceiveDto,
+  TradesAPIDto,
+} from '../dtos/websockets.dto';
 
 export type FinnhubTradesPublisher = (dto: TradesAPIDto) => void;
 
-export class FinnhubWebsocketsConnector extends WebSocket {
+export class FinnhubWebsocketsConnector {
   private readonly logger = new Logger(FinnhubWebsocketsConnector.name);
   private readonly symbols = new Set<string>();
+  private isOpen = false;
+  private readonly websocket: WebSocket;
 
   constructor(api: string, publish: FinnhubTradesPublisher) {
-    super(api);
+    this.websocket = new WebSocket(api);
 
-    this.addEventListener('open', () =>
-      this.logger.log('Connection to Finnhub is open'),
-    );
+    this.websocket.on('open', () => {
+      this.isOpen = true;
+      this.logger.log('Connection to Finnhub is open');
 
-    this.addEventListener('error', (e) => this.logger.error(e));
-    this.addEventListener('close', () => {
-      this.logger.warn('Closing connection to Finnhub');
-      this.close();
+      ['AAPL', 'BINANCE:BTCUSDT', 'IC MARKETS:1'].forEach((symbol) => {
+        this.subscribe(symbol);
+      });
     });
 
-    this.addEventListener('message', (event: MessageEvent<string>) => {
-      switch (event.type) {
-        case 'message':
-          return this.messageHandler(event);
+    this.websocket.on('error', (e) => this.logger.error(e));
 
-        case 'trade':
-          return this.tradeHandler(event, publish);
+    this.websocket.on('close', () => {
+      this.logger.warn('Closing connection to Finnhub');
+    });
 
-        default:
-          return this.unknownHandler(event);
+    this.websocket.on('message', (raw) => {
+      try {
+        const data = JSON.parse(raw.toString()) as FinnhubWsReceiveDto;
+
+        switch (data.type) {
+          case 'trade':
+            if (isTradesAPIDto(data)) {
+              this.tradeHandler(data, publish);
+            } else {
+              this.logger.warn(
+                `Invalid trade message: ${JSON.stringify(data)}`,
+              );
+            }
+            break;
+
+          case 'ping':
+            this.logger.log('Ping received');
+            this.pong();
+            break;
+
+          case 'error':
+            this.logger.error(`Error from server: ${data.msg}`);
+            break;
+
+          default:
+            this.messageHandler(data as FinnhubWsDto);
+        }
+      } catch (e) {
+        this.logger.error('JSON parse error:', e);
       }
     });
   }
@@ -46,29 +77,34 @@ export class FinnhubWebsocketsConnector extends WebSocket {
     this.symbols.delete(symbol);
   }
 
-  private messageHandler(event: MessageEvent<string>): void {
-    this.logger.log(`Message from Finnhub: ${event.data}`);
-    this.pong();
+  private messageHandler(data: FinnhubWsDto): void {
+    this.logger.log(`Unhandled message: ${JSON.stringify(data)}`);
   }
 
   private tradeHandler(
-    event: MessageEvent<string>,
+    data: TradesAPIDto,
     publish: FinnhubTradesPublisher,
   ): void {
-    this.logger.log(`Trade from Finnhub: ${event.data}`);
-    publish(JSON.parse(event.data) as TradesAPIDto);
-  }
-
-  private unknownHandler(event: MessageEvent<string>): void {
-    this.logger.warn(`Unknown event type: ${event.type}\n${event.data}`);
+    this.logger.log(`Trade: ${JSON.stringify(data)}`);
+    publish(data);
   }
 
   private pong(): void {
+    this.logger.log('Received ping, sending pong');
     this.next({ type: 'pong' });
   }
 
   private next(event: FinnhubWsDto): void {
-    this.logger.log(`Next event sending: ${JSON.stringify(event)}`);
-    this.send(JSON.stringify(event));
+    if (this.isOpen) {
+      const payload = JSON.stringify(event);
+      this.logger.log(`Sending: ${payload}`);
+      this.websocket.send(payload);
+    } else {
+      this.logger.warn('WebSocket is not open. Cannot send message.');
+    }
   }
+}
+
+function isTradesAPIDto(data: any): data is TradesAPIDto {
+  return data.type === 'trade' && Array.isArray(data.data);
 }

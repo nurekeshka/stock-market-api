@@ -14,15 +14,26 @@ export interface PongWsDto {
 
 export type FinnhubWsDto = SubscribeWsDto | UnsubscribeWsDto | PongWsDto;
 
-export class TradesAPIDto {
+export interface TradeData {
+  s: string; // Symbol
+  p: number; // Price
+  t: number; // Timestamp (milliseconds)
+  v: number; // Volume
+  c: number[]; // Trade condition codes
+}
+
+export interface TradesAPIDto {
   type: 'trade';
   data: TradeData[];
 }
 
-export interface TradeData {
-  s: string; // Symbol
-  p: number; // Last price
-  t: string; // UNIX milliseconds timestamp.
-  v: number; // Volume
-  c: number; // List of trade conditions. A comprehensive list of trade conditions code can be found
+export interface PingDto {
+  type: 'ping';
 }
+
+export interface ErrorDto {
+  type: 'error';
+  msg: string;
+}
+
+export type FinnhubWsReceiveDto = TradesAPIDto | PingDto | ErrorDto;
