@@ -13,7 +13,7 @@ import { Server, Socket } from 'socket.io';
 import { TradesAPIDto } from '../dtos/websockets.dto';
 import { FinnhubWebsocketsConnector } from './finnhub.connector';
 
-@WebSocketGateway({ namespace: '/finnhub' })
+@WebSocketGateway({ namespace: '/finnhub', cors: true })
 export class FinnhubWebsocketsGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
@@ -28,10 +28,11 @@ export class FinnhubWebsocketsGateway
 
   constructor(configs: ConfigService) {
     const publishTrades = (dto: TradesAPIDto): void => {
-      for (const [client, symbols] of this.subscriptions.entries()) {
-        const trades = dto.data.filter((trade) => symbols.has(trade.s));
-        this.server.to(client).emit('trades', trades);
-        this.logger.log(`Publishing to ${client} `);
+      for (const client of this.subscriptions.keys()) {
+        this.server.to(client).emit('trades', dto.data);
+        this.logger.log(
+          `Publishing all trades to ${client} count: ${dto.data.length}`,
+        );
       }
     };
 

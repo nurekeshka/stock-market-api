@@ -15,13 +15,70 @@ export class FinnhubWebsocketsConnector {
   private readonly websocket: WebSocket;
 
   constructor(api: string, publish: FinnhubTradesPublisher) {
+    this.logger.log('FinnhubWebsocketsConnector constructor called');
+
     this.websocket = new WebSocket(api);
 
     this.websocket.on('open', () => {
       this.isOpen = true;
       this.logger.log('Connection to Finnhub is open');
 
-      ['AAPL', 'BINANCE:BTCUSDT', 'IC MARKETS:1'].forEach((symbol) => {
+      const symbolsToSubscribe = [
+        'AAPL',
+        'GOOGL',
+        'MSFT',
+        'AMZN',
+        'TSLA',
+        'FB',
+        'NFLX',
+        'NVDA',
+        'BABA',
+        'INTC',
+        'ORCL',
+        'CSCO',
+        'ADBE',
+        'PYPL',
+        'CRM',
+        'AMD',
+        'SQ',
+        'UBER',
+        'TWTR',
+        'SHOP',
+        'SPOT',
+        'V',
+        'MA',
+        'DIS',
+        'BAC',
+        'WMT',
+        'T',
+        'KO',
+        'PEP',
+        'NKE',
+        'XOM',
+        'CVX',
+        'JNJ',
+        'PFE',
+        'MRK',
+        'ABBV',
+        'COST',
+        'MCD',
+        'QCOM',
+        'TXN',
+        'IBM',
+        'GS',
+        'JPM',
+        'BA',
+        'CAT',
+        'GM',
+        'F',
+        'GE',
+        'GM',
+        'NIO',
+        'BINANCE:BTCUSDT',
+        'IC MARKETS:1',
+      ];
+
+      symbolsToSubscribe.forEach((symbol) => {
         this.subscribe(symbol);
       });
     });
@@ -95,7 +152,7 @@ export class FinnhubWebsocketsConnector {
   }
 
   private next(event: FinnhubWsDto): void {
-    if (this.isOpen) {
+    if (this.isOpen == true) {
       const payload = JSON.stringify(event);
       this.logger.log(`Sending: ${payload}`);
       this.websocket.send(payload);
