@@ -23,4 +23,19 @@ export class HoldingsService {
     account.holdings.push({ symbol, transactions: [] });
     return account.save();
   }
+
+  async findAllByUsername(username: string): Promise<Holding[]> {
+    const account = await this.accounts.findOne({ username }).exec();
+    if (!account) throw new Error(`Account doesn't exist`);
+
+    return account.holdings;
+  }
+
+  async createByUsername(username: string, symbol: string): Promise<Account> {
+    const account = await this.accounts.findOne({ username }).exec();
+    if (!account) throw new Error(`Account doesn't exist`);
+
+    account.holdings.push({ symbol, transactions: [] });
+    return account.save();
+  }
 }
