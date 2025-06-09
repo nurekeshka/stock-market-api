@@ -1,5 +1,4 @@
 import { Logger } from '@nestjs/common';
-import { WebSocket } from 'ws';
 import {
   FinnhubWsDto,
   FinnhubWsReceiveDto,
@@ -8,90 +7,90 @@ import {
 
 export type FinnhubTradesPublisher = (dto: TradesAPIDto) => void;
 
-export class FinnhubWebsocketsConnector {
+export class FinnhubWebsocketsConnector extends WebSocket {
   private readonly logger = new Logger(FinnhubWebsocketsConnector.name);
   private readonly symbols = new Set<string>();
   private isOpen = false;
   private readonly websocket: WebSocket;
 
   constructor(api: string, publish: FinnhubTradesPublisher) {
+    super(api);
     this.logger.log('FinnhubWebsocketsConnector constructor called');
 
-    this.websocket = new WebSocket(api);
-
-    this.websocket.on('open', () => {
+    this.addEventListener('open', () => {
       this.isOpen = true;
       this.logger.log('Connection to Finnhub is open');
 
-      const symbolsToSubscribe = [
-        'AAPL',
-        'GOOGL',
-        'MSFT',
-        'AMZN',
-        'TSLA',
-        'FB',
-        'NFLX',
-        'NVDA',
-        'BABA',
-        'INTC',
-        'ORCL',
-        'CSCO',
-        'ADBE',
-        'PYPL',
-        'CRM',
-        'AMD',
-        'SQ',
-        'UBER',
-        'TWTR',
-        'SHOP',
-        'SPOT',
-        'V',
-        'MA',
-        'DIS',
-        'BAC',
-        'WMT',
-        'T',
-        'KO',
-        'PEP',
-        'NKE',
-        'XOM',
-        'CVX',
-        'JNJ',
-        'PFE',
-        'MRK',
-        'ABBV',
-        'COST',
-        'MCD',
-        'QCOM',
-        'TXN',
-        'IBM',
-        'GS',
-        'JPM',
-        'BA',
-        'CAT',
-        'GM',
-        'F',
-        'GE',
-        'GM',
-        'NIO',
-        'BINANCE:BTCUSDT',
-        'IC MARKETS:1',
-      ];
+      // const symbolsToSubscribe = [
+      //   'AAPL',
+      //   'GOOGL',
+      //   'MSFT',
+      //   'AMZN',
+      //   'TSLA',
+      //   'FB',
+      //   'NFLX',
+      //   'NVDA',
+      //   'BABA',
+      //   'INTC',
+      //   'ORCL',
+      //   'CSCO',
+      //   'ADBE',
+      //   'PYPL',
+      //   'CRM',
+      //   'AMD',
+      //   'SQ',
+      //   'UBER',
+      //   'TWTR',
+      //   'SHOP',
+      //   'SPOT',
+      //   'V',
+      //   'MA',
+      //   'DIS',
+      //   'BAC',
+      //   'WMT',
+      //   'T',
+      //   'KO',
+      //   'PEP',
+      //   'NKE',
+      //   'XOM',
+      //   'CVX',
+      //   'JNJ',
+      //   'PFE',
+      //   'MRK',
+      //   'ABBV',
+      //   'COST',
+      //   'MCD',
+      //   'QCOM',
+      //   'TXN',
+      //   'IBM',
+      //   'GS',
+      //   'JPM',
+      //   'BA',
+      //   'CAT',
+      //   'GM',
+      //   'F',
+      //   'GE',
+      //   'GM',
+      //   'NIO',
+      //   'BINANCE:BTCUSDT',
+      //   'IC MARKETS:1',
+      // ];
 
+      const symbolsToSubscribe = [];
       symbolsToSubscribe.forEach((symbol) => {
         this.subscribe(symbol);
       });
     });
 
-    this.websocket.on('error', (e) => this.logger.error(e));
+    this.addEventListener('error', (e) => this.logger.error(e));
 
-    this.websocket.on('close', () => {
+    this.addEventListener('close', () => {
       this.logger.warn('Closing connection to Finnhub');
     });
 
-    this.websocket.on('message', (raw) => {
+    this.addEventListener('message', (message: MessageEvent<string>) => {
       try {
-        const data = JSON.parse(raw.toString()) as FinnhubWsReceiveDto;
+        const data = JSON.parse(message.data) as FinnhubWsReceiveDto;
 
         switch (data.type) {
           case 'trade':
@@ -162,6 +161,6 @@ export class FinnhubWebsocketsConnector {
   }
 }
 
-function isTradesAPIDto(data: any): data is TradesAPIDto {
+function isTradesAPIDto(data: FinnhubWsReceiveDto): data is TradesAPIDto {
   return data.type === 'trade' && Array.isArray(data.data);
 }
