@@ -10,7 +10,6 @@ export type FinnhubTradesPublisher = (dto: TradesAPIDto) => void;
 export class FinnhubWebsocketsConnector extends WebSocket {
   private readonly logger = new Logger(FinnhubWebsocketsConnector.name);
   private readonly symbols = new Set<string>();
-  private readonly websocket: WebSocket;
 
   constructor(api: string, publish: FinnhubTradesPublisher) {
     super(api);
@@ -33,25 +32,22 @@ export class FinnhubWebsocketsConnector extends WebSocket {
         switch (data.type) {
           case 'trade':
             if (isTradesAPIDto(data)) {
-              this.tradeHandler(data, publish);
+              return this.tradeHandler(data, publish);
             } else {
-              this.logger.warn(
+              return this.logger.warn(
                 `Invalid trade message: ${JSON.stringify(data)}`,
               );
             }
-            break;
 
           case 'ping':
             this.logger.log('Ping received');
-            this.pong();
-            break;
+            return this.pong();
 
           case 'error':
-            this.logger.error(`Error from server: ${data.msg}`);
-            break;
+            return this.logger.error(`Error from server: ${data.msg}`);
 
           default:
-            this.messageHandler(data as FinnhubWsDto);
+            return this.messageHandler(data as FinnhubWsDto);
         }
       } catch (e) {
         this.logger.error('JSON parse error:', e);
@@ -91,7 +87,7 @@ export class FinnhubWebsocketsConnector extends WebSocket {
   private next(event: FinnhubWsDto): void {
     const payload = JSON.stringify(event);
     this.logger.log(`Sending: ${payload}`);
-    this.websocket.send(payload);
+    this.send(payload);
   }
 }
 
