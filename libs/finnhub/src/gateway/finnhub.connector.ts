@@ -10,7 +10,6 @@ export type FinnhubTradesPublisher = (dto: TradesAPIDto) => void;
 export class FinnhubWebsocketsConnector extends WebSocket {
   private readonly logger = new Logger(FinnhubWebsocketsConnector.name);
   private readonly symbols = new Set<string>();
-  private isOpen = false;
   private readonly websocket: WebSocket;
 
   constructor(api: string, publish: FinnhubTradesPublisher) {
@@ -18,7 +17,6 @@ export class FinnhubWebsocketsConnector extends WebSocket {
     this.logger.log('FinnhubWebsocketsConnector constructor called');
 
     this.addEventListener('open', () => {
-      this.isOpen = true;
       this.logger.log('Connection to Finnhub is open');
     });
 
@@ -91,13 +89,9 @@ export class FinnhubWebsocketsConnector extends WebSocket {
   }
 
   private next(event: FinnhubWsDto): void {
-    if (this.isOpen == true) {
-      const payload = JSON.stringify(event);
-      this.logger.log(`Sending: ${payload}`);
-      this.websocket.send(payload);
-    } else {
-      this.logger.warn('WebSocket is not open. Cannot send message.');
-    }
+    const payload = JSON.stringify(event);
+    this.logger.log(`Sending: ${payload}`);
+    this.websocket.send(payload);
   }
 }
 
