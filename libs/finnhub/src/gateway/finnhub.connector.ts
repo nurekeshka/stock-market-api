@@ -20,66 +20,6 @@ export class FinnhubWebsocketsConnector extends WebSocket {
     this.addEventListener('open', () => {
       this.isOpen = true;
       this.logger.log('Connection to Finnhub is open');
-
-      // const symbolsToSubscribe = [
-      //   'AAPL',
-      //   'GOOGL',
-      //   'MSFT',
-      //   'AMZN',
-      //   'TSLA',
-      //   'FB',
-      //   'NFLX',
-      //   'NVDA',
-      //   'BABA',
-      //   'INTC',
-      //   'ORCL',
-      //   'CSCO',
-      //   'ADBE',
-      //   'PYPL',
-      //   'CRM',
-      //   'AMD',
-      //   'SQ',
-      //   'UBER',
-      //   'TWTR',
-      //   'SHOP',
-      //   'SPOT',
-      //   'V',
-      //   'MA',
-      //   'DIS',
-      //   'BAC',
-      //   'WMT',
-      //   'T',
-      //   'KO',
-      //   'PEP',
-      //   'NKE',
-      //   'XOM',
-      //   'CVX',
-      //   'JNJ',
-      //   'PFE',
-      //   'MRK',
-      //   'ABBV',
-      //   'COST',
-      //   'MCD',
-      //   'QCOM',
-      //   'TXN',
-      //   'IBM',
-      //   'GS',
-      //   'JPM',
-      //   'BA',
-      //   'CAT',
-      //   'GM',
-      //   'F',
-      //   'GE',
-      //   'GM',
-      //   'NIO',
-      //   'BINANCE:BTCUSDT',
-      //   'IC MARKETS:1',
-      // ];
-
-      const symbolsToSubscribe = [];
-      symbolsToSubscribe.forEach((symbol) => {
-        this.subscribe(symbol);
-      });
     });
 
     this.addEventListener('error', (e) => this.logger.error(e));
