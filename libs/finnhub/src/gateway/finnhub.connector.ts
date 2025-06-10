@@ -1,4 +1,5 @@
 import { Logger } from '@nestjs/common';
+import { WebSocket } from 'ws';
 import {
   FinnhubWsDto,
   FinnhubWsReceiveDto,
@@ -15,17 +16,17 @@ export class FinnhubWebsocketsConnector extends WebSocket {
     super(api);
     this.logger.log('FinnhubWebsocketsConnector constructor called');
 
-    this.addEventListener('open', () => {
+    this.on('open', () => {
       this.logger.log('Connection to Finnhub is open');
     });
 
-    this.addEventListener('error', (e) => this.logger.error(e));
+    this.on('error', (e) => this.logger.error(e));
 
-    this.addEventListener('close', () => {
+    this.on('close', () => {
       this.logger.warn('Closing connection to Finnhub');
     });
 
-    this.addEventListener('message', (message: MessageEvent<string>) => {
+    this.on('message', (message: MessageEvent<string>) => {
       try {
         const data = JSON.parse(message.data) as FinnhubWsReceiveDto;
 
@@ -77,11 +78,6 @@ export class FinnhubWebsocketsConnector extends WebSocket {
   ): void {
     this.logger.log(`Trade: ${JSON.stringify(data)}`);
     publish(data);
-  }
-
-  private pong(): void {
-    this.logger.log('Received ping, sending pong');
-    this.next({ type: 'pong' });
   }
 
   private next(event: FinnhubWsDto): void {
