@@ -23,7 +23,8 @@
       ],
       "@libs/finnhub": [
         "libs/finnhub/src"
-      ]
+      ],
+
     },
     "removeComments": true,
     "skipLibCheck": true,
