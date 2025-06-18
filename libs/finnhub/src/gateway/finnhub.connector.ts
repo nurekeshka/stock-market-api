@@ -86,6 +86,7 @@ export class FinnhubWebsocketsConnector extends WebSocket {
 
     this.on('message', (message: RawData) => {
       try {
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string
         const data = JSON.parse(message.toString()) as FinnhubWsReceiveDto;
 
         switch (data.type) {

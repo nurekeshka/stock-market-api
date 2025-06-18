@@ -21,6 +21,7 @@ export interface Configuration {
   redis: {
     mock: boolean;
   };
+  features: Record<Features, boolean>;
 }
 
 export type PaginationConfigs = Pick<
@@ -36,3 +37,5 @@ export type PaginationConfigs = Pick<
   | 'relativePath'
   | 'withDeleted'
 >;
+
+export type Features = 'finnhub_ws' | '';

@@ -26,5 +26,8 @@
   },
   "redis": {
     "mock": true
+  },
+  "features": {
+    "finnhub_ws": false
   }
 }

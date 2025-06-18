@@ -36,10 +36,12 @@ export class FinnhubWebsocketsGateway
       }
     };
 
-    this.ws = new FinnhubWebsocketsConnector(
-      `wss://ws.finnhub.io?token=${configs.getOrThrow('finnhub.key')}`,
-      publishTrades,
-    );
+    if (configs.get('features.finnhub_ws', false)) {
+      this.ws = new FinnhubWebsocketsConnector(
+        `wss://ws.finnhub.io?token=${configs.getOrThrow('finnhub.key')}`,
+        publishTrades,
+      );
+    }
   }
 
   handleConnection(client: Socket): void {
