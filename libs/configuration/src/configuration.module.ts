@@ -19,6 +19,9 @@ export async function setup(e: Environments = env): Promise<Configuration> {
       if (base === null) throw Error('Base configuration file is not there.');
 
       const absolute = process.env['LOCAL_CONFIG_PATH'];
+      console.log(absolute);
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      absolute && console.log(existsSync(absolute));
 
       if (absolute && existsSync(absolute)) {
         const local = await scanfile(absolute);
