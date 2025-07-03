@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { existsSync } from 'fs';
 import { ConfigurationEnum } from './configuration.constants';
 import { Configuration, Environments } from './configuration.interface';
-import { config, env, validate } from './configuration.utils';
+import { config, env, scanfile, validate } from './configuration.utils';
 
 /**
  * @throws {Error} when the configuration file doesn't exist
@@ -16,6 +17,17 @@ export async function setup(e: Environments = env): Promise<Configuration> {
     case 'dev': {
       const base = await config(ConfigurationEnum.base);
       if (base === null) throw Error('Base configuration file is not there.');
+
+      const absolute = process.env['LOCAL_CONFIG_PATH'];
+
+      if (absolute && existsSync(absolute)) {
+        const local = await scanfile(absolute);
+        return {
+          ...base,
+          ...local,
+        };
+      }
+
       const local = await config(ConfigurationEnum.local);
 
       return {

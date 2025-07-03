@@ -16,8 +16,11 @@ export async function config(
   name: ConfigurationEnum,
 ): Promise<Configuration | null> {
   const path = resolve(directory, `${name}.json`);
-  if (!existsSync(path)) return null;
+  return scanfile(path);
+}
 
+export async function scanfile(path: string): Promise<Configuration | null> {
   const file = await promises.readFile(path, { encoding: 'utf-8' });
+  if (!existsSync(path)) return null;
   return JSON.parse(file) as Configuration;
 }
