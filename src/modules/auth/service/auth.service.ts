@@ -1,7 +1,6 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { JwtResponseDto } from '../dtos/jwt-response.dto';
-import { ProfileResponseDto } from '../dtos/profile.dto';
 import { SignInDto } from '../dtos/sign-in.dto';
 import { SignUpDto } from '../dtos/sign-up.dto';
 import { HashStrategy } from '../strategies/hash.strategy';
@@ -24,9 +23,5 @@ export class AuthService {
   async signUp(dto: SignUpDto): Promise<JwtResponseDto> {
     const account = await this.hashes.createAccount(dto);
     return this.jwts.createJwt(account);
-  }
-
-  profile(): Promise<ProfileResponseDto> {
-    return {} as never;
   }
 }

@@ -6,6 +6,12 @@ export class Holding {
   @Prop({ required: true })
   symbol: string;
 
+  @Prop({ required: true })
+  name: string;
+
+  @Prop({ required: true })
+  icon: string;
+
   @Prop({ type: [TransactionSchema], default: [] })
   transactions: Transaction[];
 }

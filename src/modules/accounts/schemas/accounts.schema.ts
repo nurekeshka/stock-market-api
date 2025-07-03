@@ -5,9 +5,6 @@ import { Holding, HoldingSchema } from './holdings.schema';
 @Schema()
 export class Account extends Document {
   @Prop({ required: true, unique: true })
-  username: string;
-
-  @Prop({ required: true })
   email: string;
 
   @Prop({ required: true })
@@ -25,7 +22,6 @@ AccountSchema.set('toJSON', {
   transform: (_, schema: Account) => {
     return {
       email: schema.email,
-      username: schema.username,
       holdings: schema.holdings,
     };
   },

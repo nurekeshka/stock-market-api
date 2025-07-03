@@ -8,7 +8,6 @@ describe('Authentication & Authorization', () => {
   let jwt = '';
 
   const mocks = {
-    username: 'john.doe',
     password: 'Nurbek2004!',
     email: 'john.doe@inbox.com',
   };
@@ -16,7 +15,7 @@ describe('Authentication & Authorization', () => {
   it('POST /api/auth/sign-in: failure', async () => {
     const res = await supertest(app.getHttpServer())
       .post('/api/auth/sign-in')
-      .send({ username: mocks.username, password: mocks.password })
+      .send({ email: mocks.email, password: mocks.password })
       .then((res) => res.body as never);
 
     expect(res).toMatchObject({
@@ -52,7 +51,7 @@ describe('Authentication & Authorization', () => {
   it('POST /api/auth/sign-in: sucess', async () => {
     const res = await supertest(app.getHttpServer())
       .post('/api/auth/sign-in')
-      .send({ username: mocks.username, password: mocks.password })
+      .send({ email: mocks.email, password: mocks.password })
       .then((res) => res.body as JwtResponseDto);
 
     expect(res).toMatchObject({ access_token: expect.any(String) });
@@ -67,7 +66,6 @@ describe('Authentication & Authorization', () => {
 
     expect(res).toMatchObject({
       email: mocks.email,
-      username: mocks.username,
       holdings: [],
     });
   });

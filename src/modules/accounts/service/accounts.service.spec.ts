@@ -11,7 +11,6 @@ describe('Accounts Service', () => {
   let repository: jest.Mocked<Model<Account>>;
 
   const accountMock: Account = {
-    username: '',
     email: '',
     password: '',
   } as never;
@@ -37,7 +36,7 @@ describe('Accounts Service', () => {
     } as never);
 
     await expect(
-      service.create({ username: 'test', email: '', password: '' }),
+      service.create({ email: 'test', password: '' }),
     ).rejects.toThrow(BadRequestException);
   });
 

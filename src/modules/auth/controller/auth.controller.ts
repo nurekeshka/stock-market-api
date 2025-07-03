@@ -37,6 +37,6 @@ export class AuthController {
   @Get('me')
   @UseGuards(AuthGuard('jwt'))
   me(@Request() req: AuthorizedRequest): Promise<ProfileResponseDto | null> {
-    return this.accounts.findOne(req.user.username);
+    return this.accounts.findOne(req.user.email);
   }
 }

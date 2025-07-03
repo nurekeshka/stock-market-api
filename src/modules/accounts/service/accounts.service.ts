@@ -10,13 +10,13 @@ export class AccountsService {
   private readonly accounts: Model<Account>;
 
   async create(dto: SignUpDto): Promise<Account> {
-    if (await this.accounts.exists({ username: dto.username }).exec())
+    if (await this.accounts.exists({ username: dto.email }).exec())
       throw new BadRequestException('Account with this username exists');
 
     return this.accounts.create(dto);
   }
 
-  findOne(username: string): Promise<Account | null> {
-    return this.accounts.findOne({ username }).exec();
+  findOne(email: string): Promise<Account | null> {
+    return this.accounts.findOne({ email }).exec();
   }
 }

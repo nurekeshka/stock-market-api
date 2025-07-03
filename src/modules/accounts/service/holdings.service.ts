@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CreateHoldingDto } from '../dtos/create-holding.dto';
 import { Account } from '../schemas/accounts.schema';
 import { Holding } from '../schemas/holdings.schema';
 
@@ -9,33 +10,32 @@ export class HoldingsService {
   @InjectModel(Account.name)
   private readonly accounts: Model<Account>;
 
-  async findAll(uuid: string): Promise<Holding[]> {
-    const account = await this.accounts.findOne({ uuid }).exec();
+  async create(email: string, dto: CreateHoldingDto): Promise<Holding> {
+    const account = await this.accounts.findOne({ email }).exec();
+    if (!account) throw Error(`Account doesn't exist`);
+    const holding: Holding = {
+      symbol: dto.symbol,
+      icon: dto.icon,
+      name: dto.name,
+      transactions: [],
+    };
+
+    account.holdings.push(holding);
+    await account.save();
+
+    return holding;
+  }
+
+  async findAll(email: string): Promise<Holding[]> {
+    const account = await this.accounts.findOne({ email }).exec();
     if (!account) throw Error(`Account doesn't exist`);
 
     return account.holdings;
   }
 
-  async create(uuid: string, symbol: string): Promise<Account> {
-    const account = await this.accounts.findOne({ uuid }).exec();
+  async findOne(email: string, symbol: string): Promise<Holding | undefined> {
+    const account = await this.accounts.findOne({ email }).exec();
     if (!account) throw Error(`Account doesn't exist`);
-
-    account.holdings.push({ symbol, transactions: [] });
-    return account.save();
-  }
-
-  async findAllByUsername(username: string): Promise<Holding[]> {
-    const account = await this.accounts.findOne({ username }).exec();
-    if (!account) throw new Error(`Account doesn't exist`);
-
-    return account.holdings;
-  }
-
-  async createByUsername(username: string, symbol: string): Promise<Account> {
-    const account = await this.accounts.findOne({ username }).exec();
-    if (!account) throw new Error(`Account doesn't exist`);
-
-    account.holdings.push({ symbol, transactions: [] });
-    return account.save();
+    return account.holdings.find((holding) => holding.symbol === symbol);
   }
 }

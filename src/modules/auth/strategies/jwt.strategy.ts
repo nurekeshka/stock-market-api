@@ -30,7 +30,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async login(dto: SignInDto): Promise<Account | null> {
-    const account = await this.accounts.findOne(dto.username);
+    const account = await this.accounts.findOne(dto.email);
     return account &&
       (await this.hashes.compare(dto.password, account.password))
       ? account
@@ -44,12 +44,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   validate(dto: ValidationDto): ValidationDto {
-    return { username: dto.username };
+    return { email: dto.email };
   }
 
   transform(schema: SignInDto): SignInDto {
     return {
-      username: schema.username,
+      email: schema.email,
       password: schema.password,
     };
   }
